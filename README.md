@@ -1,4 +1,4 @@
-#  CampusWatch — Smart Campus Entry-Exit Monitoring System
+# CampusWatch — Smart Campus Entry-Exit Monitoring System
 
 > **Redefining Campus Security with Zero-Additional Infrastructure**
 
@@ -8,7 +8,7 @@
 
 ---
 
-## 📌 About
+## About
 
 CampusWatch is a web-based smart campus security and entry management system that eliminates manual verification problems and enables real-time campus monitoring.
 
@@ -16,13 +16,13 @@ Traditional campus security relies on physical ID cards and manual registers —
 
 ---
 
-## 🧠 Research Contribution
+## Research Contribution
 
 CampusWatch proposes a **software-first campus security architecture** that eliminates dependency on expensive RFID or biometric hardware while maintaining real-time monitoring and digital audit trails.
 
 ---
 
-## 🚀 Features
+## Features
 
 - ✅ Real-time student entry & exit verification
 - ✅ Live occupancy tracking dashboard
@@ -35,7 +35,7 @@ CampusWatch proposes a **software-first campus security architecture** that elim
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |-------|------------|
@@ -47,7 +47,7 @@ CampusWatch proposes a **software-first campus security architecture** that elim
 
 ---
 
-## 🏗️ System Architecture
+## System Architecture
 
 ```
 Frontend (HTML/CSS/JS)
@@ -59,7 +59,7 @@ Database (MongoDB)
 
 ---
 
-## ⚙️ Getting Started
+## Getting Started
 
 ### Prerequisites
 - Node.js installed
@@ -96,14 +96,14 @@ Open your browser and go to `http://localhost:3000`
 
 ---
 
-## 🏆 Recognition
+## Recognition
 
 - 🥇 **1st Prize** — TechnoSapiens 2K26 Techno Exhibit
 - 🇮🇳 **Selected Exhibitor** — Bharat Bodhan AI Conclave 2026, organized by Ministry of Education, Government of India — presented at **Bharat Mandapam, New Delhi**
 
 ---
 
-## 🔮 Future Scope
+## Future Scope
 
 - IoT Integration (smart gates, sensor-based detection)
 - WhatsApp API alerts to parents
