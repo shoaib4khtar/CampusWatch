@@ -24,14 +24,14 @@ CampusWatch proposes a **software-first campus security architecture** that elim
 
 ## Features
 
-- ✅ Real-time student entry & exit verification
-- ✅ Live occupancy tracking dashboard
-- ✅ PIN-based guard authentication
-- ✅ Smart filtering by Course, Shift & Semester
-- ✅ Complete history log with timestamps
-- ✅ One-click Excel/CSV report export
-- ✅ Dark Mode & Light Mode UI
-- ✅ Barcode scan + Manual ID input support
+-  Real-time student entry & exit verification
+-  Live occupancy tracking dashboard
+-  PIN-based guard authentication
+-  Smart filtering by Course, Shift & Semester
+-  Complete history log with timestamps
+-  One-click Excel/CSV report export
+-  Dark Mode & Light Mode UI
+-  Barcode scan + Manual ID input support
 
 ---
 
