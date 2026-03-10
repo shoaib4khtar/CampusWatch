@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Student</title>
+    <link rel="icon" href="logo3.png" type="image/png">
+    <link rel="shortcut icon" href="logo3.png" type="image/png">
+    
+    <meta name="theme-color" content="#0f172a">
+    <link rel="icon" href="logo3.png" type="image/png">
+    <link rel="shortcut icon" href="logo3.png" type="image/png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 1. DARK GOLD THEME VARIABLES */
+        :root {
+            --bg-dark: #0f172a;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 215, 0, 0.15);
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --gold-accent: #fbbf24;
+            --gold-gradient: linear-gradient(90deg, #d97706 0%, #fbbf24 100%);
+            --blue-gradient: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+        }
+
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: var(--blue-gradient); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+            color: var(--text-main);
+        }
+
+        /* 2. GLASSMORPHISM CARD */
+        .form-card { 
+            background: var(--card-bg); 
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 40px; 
+            border-radius: 20px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3); 
+            width: 400px; 
+            text-align: center; 
+            border: 1px solid var(--border-color);
+        }
+
+        h2 { 
+            color: var(--gold-accent); 
+            margin-bottom: 25px; 
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
+        }
+
+        /* 3. INPUTS & SELECTS (Dark Mode) */
+        input, select { 
+            width: 100%; 
+            padding: 14px; 
+            margin: 10px 0; 
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            border-radius: 10px; 
+            font-size: 14px; 
+            color: white;
+            outline: none; 
+            font-family: 'Poppins', sans-serif;
+            box-sizing: border-box; /* Fix width padding issue */
+            transition: 0.3s;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--gold-accent);
+            box-shadow: 0 0 10px rgba(251, 191, 36, 0.2);
+        }
+
+        /* Dropdown Options styling */
+        option { background: #1e293b; color: white; }
+
+        /* 4. FILE UPLOAD STYLING */
+        .file-upload { margin: 20px 0; text-align: left; }
+        
+        /* Custom File Input Look */
+        input[type="file"] {
+            padding: 10px;
+            background: transparent;
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+        }
+        input[type="file"]::file-selector-button {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-right: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        input[type="file"]::file-selector-button:hover {
+            background: var(--gold-accent);
+            color: #000;
+        }
+
+        /* 5. GOLD BUTTON */
+        button { 
+            width: 100%; 
+            padding: 14px; 
+            background: var(--gold-gradient); 
+            color: #0f172a; 
+            border: none; 
+            border-radius: 10px; 
+            font-size: 16px; 
+            cursor: pointer; 
+            font-weight: 700; 
+            transition: 0.3s; 
+            box-shadow: 0 4px 15px rgba(251, 191, 36, 0.2);
+            margin-top: 10px;
+        }
+        button:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 20px rgba(251, 191, 36, 0.3); 
+        }
+
+        /* Preview Image Circle */
+        .preview-img { 
+            width: 100px; 
+            height: 100px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            margin-top: 15px; 
+            border: 3px solid var(--gold-accent); 
+            display: none; 
+            box-shadow: 0 0 15px rgba(251, 191, 36, 0.2);
+            display: block; /* Logic handles display via JS, style here */
+            margin-left: auto; margin-right: auto; /* Center alignment */
+        }
+        /* Hidden by default controlled by JS */
+        img[src=""] { display: none; } 
+        img:not([src=""]) { display: block; }
+
+        /* Back Link */
+        .back-link { 
+            display: inline-block; 
+            margin-top: 20px; 
+            text-decoration: none; 
+            color: var(--text-muted); 
+            font-size: 13px; 
+            transition: 0.3s;
+        }
+        .back-link:hover { color: var(--gold-accent); }
+    </style>
+</head>
+<body>
+
+<div class="form-card">
+    <h2>➕ Add New Student</h2>
+
+    <input type="text" id="name" placeholder="Full Name" required>
+    <input type="text" id="enrollmentNo" placeholder="Enrollment ID" required>
+
+    <select id="course">
+        <option value="BCA M1">BCA (M1)</option>
+        <option value="BCA M2">BCA (M2)</option>
+        <option value="BCA E1">BCA (E1)</option>
+        <option value="BCA E2">BCA (E2)</option>
+        <option value="BBA M1">BBA (M1)</option>
+        <option value="BBA M2">BBA (M2)</option>
+        <option value="BBA E1">BBA (E1)</option>
+        <option value="BBA E2">BBA (E2)</option>
+        <option value="B.COM M1">B.COM (M1)</option>
+        <option value="B.COM M2">B.COM (M2)</option>
+        <option value="B.COM E1">B.COM (E1)</option>
+        <option value="B.COM E2">B.COM (E2)</option>
+    </select>
+
+    <select id="sem">
+        <option value="1">Sem 1</option>
+        <option value="2">Sem 2</option>
+        <option value="3">Sem 3</option>
+        <option value="4">Sem 4</option>
+        <option value="5">Sem 5</option>
+        <option value="6">Sem 6</option>
+        <option value="7">Sem 7</option>
+        <option value="8">Sem 8</option>
+    </select>
+
+    <div class="file-upload">
+        <label style="font-size:12px; color:#94a3b8; font-weight:600; margin-left:5px;">Upload Photo:</label><br>
+        <input type="file" id="photoInput" accept="image/*" onchange="previewPhoto()">
+        <img id="preview" class="preview-img" style="display:none;">
+    </div>
+
+    <button onclick="saveStudent()">Save Student</button>
+    <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
+</div>
+
+<script>
+    let base64String = "";
+
+    // Preview image and convert to Base64
+    function previewPhoto() {
+        const file = document.querySelector('input[type=file]').files[0];
+        const reader = new FileReader();
+
+        reader.onloadend = function () {
+            const preview = document.getElementById('preview');
+            preview.src = reader.result;
+            preview.style.display = "block"; // Changed from inline-block to block for centering
+            base64String = reader.result;
+        };
+
+        if (file) reader.readAsDataURL(file);
+    }
+
+    async function saveStudent() {
+        const name = document.getElementById('name').value;
+        const enrollmentNo = document.getElementById('enrollmentNo').value;
+        const course = document.getElementById('course').value;
+
+        // Semester field reference
+        const semesterElement = document.getElementById('sem');
+        const semester = semesterElement ? semesterElement.value : "";
+
+        const btn = document.querySelector('button');
+
+        // Basic validation
+        if (!name || !enrollmentNo || !base64String || !semester) {
+            alert("Please fill all fields and upload a photo!");
+            return;
+        }
+
+        btn.innerText = "Saving...";
+
+        try {
+            // Send student data to server
+            const response = await fetch('/add-student', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name,
+                    enrollmentNo,
+                    course,
+                    semester,
+                    photo: base64String
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.status === "success") {
+                alert("✅ Student Added Successfully!");
+                location.reload();
+            } else {
+                alert("❌ Error: " + result.message);
+            }
+
+        } catch (error) {
+            alert("Server Error! Check Console.");
+            console.error(error);
+        }
+
+        btn.innerText = "Save Student";
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="logo3.png" type="image/png">
+    <link rel="shortcut icon" href="logo3.png" type="image/png">
+    <link rel="manifest" href="/manifest.json?v=10">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="apple-touch-icon" href="/logo232 q.png">
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(() => console.log("✅ Service Worker Registered"))
+                .catch((err) => console.log("❌ SW Error:", err));
+        }
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>CampusWatch Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 1. Premium Dark Background */
+        body {
+            margin: 0;
+            height: 100vh;
+            /* Deep Royal Blue Gradient */
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+        }
+
+        /* 2. Glassmorphism Card (Translucent Dark) */
+        .login-card {
+            background: rgba(255, 255, 255, 0.05); /* Slight transparent white */
+            backdrop-filter: blur(12px); /* Blur effect */
+            -webkit-backdrop-filter: blur(12px);
+            padding: 2.5rem 2rem;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); /* Deep shadow */
+            text-align: center;
+            width: 85%;
+            max-width: 350px;
+            animation: floatUp 0.8s ease-out;
+        }
+
+        /* 3. Logo Styling (With Glow) */
+        .college-logo {
+            width: 130px; 
+            height: auto;
+            margin-bottom: 1rem;
+            /* Gold Glow Effect behind logo */
+            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.3));
+        }
+
+        /* Typography */
+        h2 {
+            color: #ffffff;
+            margin: 0;
+            font-weight: 700;
+            font-size: 26px;
+            letter-spacing: 0.5px;
+        }
+        .subtitle {
+            color: #94a3b8; /* Cool Grey */
+            font-size: 13px;
+            margin-top: 5px;
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Input Styling (Dark Mode) */
+        .input-group {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        label {
+            display: block;
+            font-size: 11px;
+            color: #fbbf24; /* Gold Text */
+            margin-bottom: 8px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        input {
+            width: 100%;
+            padding: 14px;
+            background: rgba(0, 0, 0, 0.3); /* Dark Input */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            box-sizing: border-box;
+            font-size: 22px;
+            text-align: center;
+            letter-spacing: 8px; /* PIN spacing */
+            font-weight: 700;
+            color: #ffffff;
+            transition: all 0.3s ease;
+        }
+        input:focus {
+            border-color: #fbbf24; /* Gold Border on focus */
+            outline: none;
+            box-shadow: 0 0 15px rgba(251, 191, 36, 0.2);
+        }
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        /* Button Styling (Gold Gradient) */
+        button {
+            width: 100%;
+            padding: 16px;
+            /* Gold Gradient */
+            background: linear-gradient(90deg, #d97706 0%, #fbbf24 100%);
+            color: #0f172a; /* Dark Text on Gold Button */
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        button:active {
+            transform: scale(0.97);
+        }
+
+        /* Footer & Error */
+        .footer {
+            margin-top: 25px;
+            font-size: 11px;
+            color: #64748b;
+        }
+        .error {
+            color: #ef4444; /* Bright Red */
+            font-size: 13px;
+            margin-top: 15px;
+            display: none;
+            font-weight: 500;
+        }
+
+        /* Animation */
+        @keyframes floatUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } 100% { transform: translateX(0); } }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <img src="/logo3.png" alt="CampusWatch Logo" class="college-logo">
+        
+        <h2>CampusWatch</h2>
+        <p class="subtitle">Secure Guard Access</p>
+        
+        <div class="input-group">
+            <label>ENTER SECURITY PIN</label>
+            <input type="tel" id="passcode" placeholder="••••" maxlength="4" autocomplete="off">
+        </div>
+
+        <button onclick="checkLogin()">UNLOCK SYSTEM</button>
+        
+        <p id="errorMsg" class="error">⚠️ Incorrect PIN</p>
+        <p class="footer">© 2026 Smart Campus Initiative</p>
+    </div>
+
+    <script>
+        function checkLogin() {
+            const pin = document.getElementById('passcode').value;
+            const card = document.querySelector('.login-card');
+            const btn = document.querySelector('button');
+
+            // 🔑 PASSWORD: 1234
+            if(pin === "1234") {
+                btn.innerHTML = "🔓 Unlocking...";
+                btn.style.background = "#22c55e"; // Green success
+                sessionStorage.setItem("guardAuth", "true");
+                
+                setTimeout(() => {
+                    window.location.href = "test.html"; 
+                }, 150);
+            } else {
+                const err = document.getElementById('errorMsg');
+                err.style.display = "block";
+                
+                // Shake effect
+                card.style.animation = "shake 0.4s";
+                setTimeout(() => { card.style.animation = ""; }, 400);
+                
+                // Clear input
+                document.getElementById('passcode').value = "";
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CampusWatch - Admin Dashboard</title>
+    <link rel="icon" href="logo3.png" type="image/png">
+    <link rel="shortcut icon" href="logo3.png" type="image/png">
+    
+    <meta name="theme-color" content="#1E3A8A">
+    <link rel="apple-touch-icon" href="/logo3.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 1. ROOT VARIABLES (Dark Theme - Default/Student Mode) */
+        :root {
+            /* Keep your original Dark Mode exactly as it was */
+            --bg-body: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 215, 0, 0.15);
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --input-bg: rgba(0, 0, 0, 0.3);
+            --input-text: #ffffff;
+            --divider-bg: rgba(255, 255, 255, 0.2); 
+            --card-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            
+            /* Gold Accents for Dark Mode */
+            --accent-color: #fbbf24;
+            --btn-gradient: linear-gradient(90deg, #d97706 0%, #fbbf24 100%);
+            --btn-text: #0f172a;
+            --status-bg: rgba(34, 197, 94, 0.15);
+            --status-text: #16a34a;
+        }
+
+       /* ☀️ LIGHT MODE (CORPORATE PROFESSIONAL BLUE) ☀️ */
+        [data-theme="light"] {
+            --bg-body: #F3F4F6;          
+            --card-bg: #FFFFFF;       
+            --border-color: #E5E7EB;     
+            
+            --text-main: #1E3A8A;       
+            --text-muted: #6B7280;       
+            
+            --input-bg: #FFFFFF;         
+            --input-text: #111827;
+            --divider-bg: #E5E7EB; 
+
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            
+            /* BLUE ACCENTS (Yellow ko hata diya) */
+            --accent-color: #2563EB;     /* Bright Blue */
+            --btn-gradient: linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%); /* Blue Gradient */
+            --btn-text: #FFFFFF;         /* White Text */
+            
+            --status-bg: #ECFDF5;
+            --status-text: #059669;
+        }
+
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: var(--bg-body); 
+            padding: 30px 40px; 
+            color: var(--text-main); 
+            margin: 0;
+            min-height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* 2. HEADER SECTION */
+        .header { 
+            background: var(--card-bg); 
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 20px 30px; 
+            border-radius: 16px; /* Slightly sharper corners */
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            gap: 30px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px; 
+            transition: 0.3s;
+        }
+        
+        h2 { margin: 0; font-weight: 700; color: var(--text-main); display: flex; align-items: center; letter-spacing: -0.5px; }
+        p { margin: 4px 0 0 0; font-size: 12px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; font-weight: 500; }
+
+        /* Partnership Divider */
+        .logo-divider {
+            width: 1px; 
+            height: 40px; 
+            background: var(--divider-bg); 
+            margin: 0 5px;
+            transition: background 0.3s;
+        }
+
+        /* 3. CONTROLS */
+        .controls { 
+            display: flex; 
+            gap: 12px; 
+            flex-wrap: wrap; 
+            align-items: center; 
+            flex-grow: 1; /* Ye bachi hui jagah le lega */
+    justify-content: center;
+        }
+        
+        input, select, .export-btn, .theme-btn { 
+            height: 42px; /* Slightly more compact */
+            padding: 0 16px; 
+            background: var(--input-bg);
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; /* Professional radius */
+            color: var(--input-text);
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            outline: none;
+            transition: all 0.2s ease;
+            box-sizing: border-box; 
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Focus State - Professional Blue Ring */
+        input:focus, select:focus { 
+            border-color: var(--accent-color); 
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); /* Subtle Blue Ring */
+        }
+        
+        /* Dark Mode Focus remains Gold */
+        :not([data-theme="light"]) input:focus, :not([data-theme="light"]) select:focus {
+            box-shadow: 0 0 10px rgba(251, 191, 36, 0.2);
+        }
+
+        #searchInput { 
+    width: 350px; /* Width badha di */
+    transition: width 0.3s ease; /* Thoda smooth effect */
+}
+
+/* Optional: Focus karne par aur lamba ho jaye */
+#searchInput:focus {
+    width: 400px;
+}
+
+        /* Theme Button */
+        .theme-btn {
+            width: 42px;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 0;
+            color: var(--text-muted);
+        }
+        .theme-btn:hover { 
+            border-color: var(--accent-color); 
+            color: var(--accent-color);
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        /* Date Input */
+        input[type="month"] { 
+            color: var(--accent-color); 
+            font-weight: 600; 
+            cursor: pointer;
+        }
+
+        /* CTA BUTTON (Blue in Light Mode, Gold in Dark Mode) */
+        .export-btn { 
+            background: var(--btn-gradient); 
+            color: var(--btn-text); 
+            border: none; 
+            padding: 0 24px;
+            cursor: pointer; 
+            font-weight: 600; 
+            letter-spacing: 0.3px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            justify-content: center;
+        }
+        .export-btn:hover { 
+            transform: translateY(-1px); 
+            box-shadow: 0 6px 8px -1px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 4. COUNTER BOX */
+        .counter-box { 
+            background: var(--input-bg); 
+            color: var(--text-main); 
+            padding: 0 30px; 
+            border-radius: 12px; 
+            text-align: center; 
+            border: 1px solid var(--border-color); /* Cleaner border */
+            min-width: 80px;
+            height: 90px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: var(--card-shadow);
+            transition: 0.3s;
+        }
+        
+        /* Highlight border in Dark Mode only */
+        :not([data-theme="light"]) .counter-box {
+            border: 2px solid var(--accent-color);
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.2);
+        }
+        
+        /* Corporate Light Mode Counter */
+        [data-theme="light"] .counter-box {
+            background: #EFF6FF; /* Very light blue tint */
+            border-color: #BFDBFE;
+        }
+
+        .counter-box h1 { 
+            margin: 0; 
+            font-size: 28px; 
+            line-height: 1; 
+            color: var(--accent-color); 
+            font-weight: 700;
+        }
+        
+        /* No text shadow in Light Mode for sharpness */
+        :not([data-theme="light"]) .counter-box h1 {
+            text-shadow: 0 0 15px rgba(251, 191, 36, 0.5);
+        }
+
+        .counter-box small { 
+            font-size: 10px; 
+            color: var(--text-muted); 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            margin-top: 2px; 
+            font-weight: 600; 
+        }
+
+        /* 5. TABLE STYLING */
+        .table-container { 
+            background: var(--card-bg); 
+            border-radius: 16px; 
+            overflow: hidden; 
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(15px);
+            transition: 0.3s;
+            box-shadow: var(--card-shadow);
+        }
+        
+        table { width: 100%; border-collapse: collapse; }
+        
+        th { 
+            background: rgba(0,0,0,0.02); 
+            padding: 18px 25px;
+            text-align: left;
+            color: var(--text-muted); 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            font-size: 12px; 
+            letter-spacing: 1px; 
+            border-bottom: 1px solid var(--border-color);
+        }
+        /* Light mode specific header bg */
+        [data-theme="light"] th { background: #F9FAFB; }
+        
+        td { 
+            padding: 18px 25px;
+            border-bottom: 1px solid var(--border-color); 
+            font-size: 14px; 
+            vertical-align: middle; 
+            color: var(--text-main);
+        }
+        
+        tbody tr:hover { background: rgba(0,0,0,0.02); }
+        [data-theme="light"] tbody tr:hover { background: #F9FAFB; }
+
+        .status-badge { 
+            background: var(--status-bg); 
+            color: var(--status-text); 
+            padding: 6px 14px; 
+            border-radius: 20px; 
+            font-size: 11px; 
+            font-weight: 600; 
+            border: 1px solid transparent; /* Cleaner look */
+        }
+
+        /* 6. MODAL STYLING */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; backdrop-filter: blur(5px); z-index: 1000; }
+        
+        .modal-content { 
+            background: var(--card-bg); 
+            padding: 30px; 
+            width: 500px; 
+            border-radius: 16px; 
+            max-height: 80vh; 
+            overflow-y: auto; 
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        /* Light Mode Modal */
+        [data-theme="light"] .modal-content { 
+            background: #FFFFFF;
+            border-color: #E5E7EB;
+        }
+        
+        /* Dark Mode Modal Glow */
+        :not([data-theme="light"]) .modal-content {
+            border: 1px solid var(--accent-color);
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        }
+
+        .modal-content h2 { color: var(--accent-color); margin-bottom: 15px; font-weight: 700; }
+        hr { border: 0; border-top: 1px solid var(--border-color); margin: 15px 0; }
+
+        .history-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color); }
+
+        .badge-entry { background: rgba(34, 197, 94, 0.1); color: #16a34a; font-weight: 600; padding: 4px 10px; border-radius: 6px; font-size: 12px; }
+        .badge-exit { background: rgba(239, 68, 68, 0.1); color: #dc2626; font-weight: 600; padding: 4px 10px; border-radius: 6px; font-size: 12px; }
+
+        .clickable-name { color: var(--accent-color); cursor: pointer; text-decoration: none; font-weight: 600; transition: 0.2s; }
+        .clickable-name:hover { text-decoration: underline; opacity: 0.8; }
+        
+        .close-btn { color: var(--text-muted); font-size: 24px; cursor: pointer; float: right; transition: 0.2s; }
+        .close-btn:hover { color: var(--text-main); }
+
+        /* --- LOGO SIZE FIX (BALANCE) --- */
+        
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div style="display: flex; align-items: center; gap: 20px;">
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <img src="college-logo.png" alt="IITM" 
+                 style="height: 45px; transition: transform 0.3s;"
+                 onmouseover="this.style.transform='scale(1.05)'" 
+                 onmouseout="this.style.transform='scale(1)'">
+            
+            <div class="logo-divider"></div>
+
+            <img id="appLogo" src="/logo3.png" alt="CampusWatch" 
+                 style="height: 42px; transition: transform 0.3s;"
+                 onmouseover="this.style.transform='scale(1.05)'" 
+                 onmouseout="this.style.transform='scale(1)'">
+        </div>
+
+        <div>
+            <h2 style="margin: 0; font-size: 22px;">CampusWatch</h2>
+            <p style="margin: 0;">Powered by IITM</p>
+        </div>
+    </div>
+
+    <div class="controls">
+        <input type="text" id="searchInput" placeholder="🔍 Search student..." onkeyup="applyFilters()">
+
+        <select id="courseFilter" onchange="applyFilters()">
+            <option value="ALL">All Courses</option>
+            <option value="BCA">BCA</option>
+            <option value="BBA">BBA</option>
+            <option value="B.COM">B.COM</option>
+        </select>
+
+        <select id="shiftFilter" onchange="applyFilters()">
+            <option value="ALL">All Shifts</option>
+            <option value="M1">Morning (M1)</option>
+            <option value="M2">Morning (M2)</option>
+            <option value="E1">Evening (E1)</option>
+            <option value="E2">Evening (E2)</option>
+        </select>
+
+        <select id="semFilter" onchange="applyFilters()">
+            <option value="">All Sem</option>
+            <option value="1">Sem 1</option>
+            <option value="2">Sem 2</option>
+            <option value="3">Sem 3</option>
+            <option value="4">Sem 4</option>
+            <option value="5">Sem 5</option>
+            <option value="6">Sem 6</option>
+            <option value="7">Sem 7</option>
+            <option value="8">Sem 8</option>
+        </select>
+
+        <button class="theme-btn" onclick="toggleTheme()" title="Switch Theme">
+            <span id="themeIcon">☀️</span>
+        </button>
+
+        <input type="month" id="reportMonth">
+        <button class="export-btn" onclick="downloadSmartReport()">Download Excel</button>
+    </div>
+
+    <div class="counter-box">
+        <h1 id="totalCount">0</h1>
+        <small>Students Inside</small>
+    </div>
+</div>
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Enrollment ID</th>
+                <th>Course</th>
+                <th>Last Activity</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <tr><td colspan="5" style="text-align:center; padding: 40px; color: var(--text-muted);">Loading Live Data...</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="historyModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h2 id="modalTitle">History</h2>
+        <hr>
+        <div id="historyList">Loading...</div>
+    </div>
+</div>
+
+<script>
+    // THEME TOGGLER
+    function toggleTheme() {
+        const body = document.body;
+        const icon = document.getElementById('themeIcon');
+        const logo = document.getElementById('appLogo');
+        
+        if (body.getAttribute('data-theme') === 'light') {
+            // Switch to DARK
+            body.removeAttribute('data-theme'); 
+            icon.innerText = "☀️"; 
+            logo.src = "/logo3.png"; // Gold Logo
+            localStorage.setItem('theme', 'dark');
+        } else {
+            // Switch to LIGHT
+            body.setAttribute('data-theme', 'light'); 
+            icon.innerText = "🌙"; 
+            logo.src = "/logo-blue.png"; // Blue Logo
+            localStorage.setItem('theme', 'light');
+        }
+    }
+
+    // Auto-Load Theme
+    if (localStorage.getItem('theme') === 'light') {
+        document.body.setAttribute('data-theme', 'light');
+        setTimeout(() => {
+            document.getElementById('themeIcon').innerText = "🌙";
+            document.getElementById('appLogo').src = "/logo-blue.png"; 
+        }, 100);
+    }
+
+    // Default month logic & Data Fetching (Unchanged)
+    document.getElementById('reportMonth').value = new Date().toISOString().slice(0,7);
+    let allStudentsData = [];
+    setInterval(fetchLiveStatus, 2000);
+    fetchLiveStatus();
+
+    async function fetchLiveStatus() {
+        try {
+            const res = await fetch('/live-dashboard');
+            const data = await res.json();
+            allStudentsData = data.students;
+            document.getElementById('totalCount').innerText = data.count;
+            applyFilters();
+        } catch (e) { console.error(e); }
+    }
+
+    function applyFilters() {
+        const search = searchInput.value.toLowerCase();
+        const course = courseFilter.value;
+        const shift = shiftFilter.value;
+        const sem = semFilter.value;
+
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = "";
+
+        const list = allStudentsData.filter(s =>
+            (s.name.toLowerCase().includes(search) || s.enrollmentNo.includes(search)) &&
+            (course === "ALL" || s.course.includes(course)) &&
+            (shift === "ALL" || s.course.includes(shift)) &&
+            (sem === "" || s.semester == sem)
+        );
+
+        if (!list.length) {
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 40px; color: var(--text-muted);">No matching records found</td></tr>`;
+            return;
+        }
+
+        list.forEach(s => {
+            const time = new Date(s.lastLog).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+            // Use logo3.png as fallback for user avatars in case of error
+            const avatarSrc = `/${s.enrollmentNo}.jpeg`; 
+            
+            tbody.innerHTML += `
+                <tr>
+                    <td>
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <img src="${avatarSrc}" onerror="this.src='/logo3.png'"
+                                style="width:36px; height:36px; border-radius:50%; object-fit:cover; border:1px solid var(--border-color);">
+                            <span class="clickable-name" onclick="showHistory('${s.enrollmentNo}','${s.name}')">${s.name}</span>
+                        </div>
+                    </td>
+                    <td><span style="font-family:monospace; font-size:13px; color:var(--text-muted);">${s.enrollmentNo}</span></td>
+                    <td>${s.course}</td>
+                    <td>${time}</td>
+                    <td><span class="status-badge">INSIDE</span></td>
+                </tr>`;
+        });
+    }
+
+    async function showHistory(id, name) {
+        historyModal.style.display = "flex";
+        modalTitle.innerText = `${name}'s History`;
+        historyList.innerHTML = "<p style='text-align:center; color:var(--text-muted)'>Fetching data...</p>";
+
+        try {
+            const res = await fetch(`/student-history/${id}`);
+            const logs = await res.json();
+
+            historyList.innerHTML = logs.length
+                ? logs.map(l => `
+                    <div class="history-item">
+                        <span class="${l.action === 'ENTRY' ? 'badge-entry' : 'badge-exit'}">
+                            ${l.action === 'ENTRY' ? '↗ ENTRY' : '↘ EXIT'}
+                        </span>
+                        <span style="font-size:13px; color:var(--text-muted)">
+                            ${new Date(l.time).toLocaleString('en-IN', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'})}
+                        </span>
+                    </div>`).join('')
+                : "<p style='text-align:center; color:var(--text-muted)'>No history found</p>";
+        } catch (e) {
+             historyList.innerHTML = "<p style='text-align:center; color:red'>Error loading history</p>";
+        }
+    }
+
+    function closeModal() {
+        historyModal.style.display = "none";
+    }
+
+    async function downloadSmartReport() {
+        const month = reportMonth.value;
+        if (!month) return alert("Select month");
+
+        try {
+            const res = await fetch('/export-history');
+            const logs = (await res.json()).filter(l => l.time.startsWith(month));
+            if (!logs.length) return alert("No data found for this month");
+
+            let csv = "Date,Name,ID,In,Out,Status\n";
+            const map = {};
+
+            logs.forEach(l => {
+                map[l.enrollmentNo] ??= [];
+                map[l.enrollmentNo].push(l);
+            });
+
+            Object.values(map).forEach(list => {
+                list.sort((a,b)=>new Date(a.time)-new Date(b.time));
+                let entry=null;
+                list.forEach(l=>{
+                    if(l.action==="ENTRY") entry=l;
+                    else if(entry){
+                        csv+=createRow(entry,l,"Completed");
+                        entry=null;
+                    }
+                });
+                if(entry) csv+=createRow(entry,null,"Inside");
+            });
+
+            const link=document.createElement("a");
+            link.href=encodeURI("data:text/csv;charset=utf-8,"+csv);
+            link.download=`Attendance_${month}.csv`;
+            link.click();
+        } catch(e) { alert("Download failed"); }
+    }
+
+    function createRow(inLog,outLog,status){
+        const d=new Date(inLog.time);
+        const outTime = outLog ? new Date(outLog.time).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}) : "-";
+        return `${d.toLocaleDateString('en-IN')},${inLog.name},${inLog.enrollmentNo},${d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})},${outTime},${status}\n`;
+    }
+</script>
+</body>
+</html>

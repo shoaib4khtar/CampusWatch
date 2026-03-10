@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="logo3.png" type="image/png">
+    <link rel="shortcut icon" href="logo3.png" type="image/png">
+    <script>
+        if (!sessionStorage.getItem("guardAuth")) {
+            window.location.href = "login.html";
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusWatch Control</title>
+    
+    <link rel="manifest" href="/manifest.json?v=20">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="apple-touch-icon" href="/logo2.png">
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(() => console.log("✅ Service Worker Registered"))
+                .catch((err) => console.log("❌ SW Error:", err));
+        }
+    </script>
+
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Main theme colors and global variables */
+        :root { --primary: #fbbf24; --secondary: #d97706; }
+        
+        /* Page background (Dark Blue Gradient) */
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); 
+            height: 100vh; 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            color: white;
+        }
+
+        /* Main card container styling (Dark Glass) */
+        .card { 
+            background: rgba(255, 255, 255, 0.05); 
+            backdrop-filter: blur(15px); 
+            -webkit-backdrop-filter: blur(15px);
+            padding: 25px; 
+            border-radius: 24px; 
+            border: 1px solid rgba(255, 215, 0, 0.15); /* Gold Border */
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); 
+            text-align: center; 
+            width: 350px; 
+            transition: transform 0.3s ease; 
+            max-height: 90vh; 
+            overflow-y: auto; 
+        }
+        
+        h2 { color: #ffffff; margin-bottom: 5px; font-weight: 700; display: flex; justify-content: center; align-items: center; }
+        p { color: #94a3b8; font-size: 13px; margin-bottom: 25px; letter-spacing: 1px; }
+
+        /* Entry and Exit toggle button design */
+        .toggle-container { 
+            background: rgba(0, 0, 0, 0.3); 
+            border-radius: 12px; 
+            padding: 5px; 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 20px; 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .toggle-btn { 
+            border: none; 
+            padding: 10px 25px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            flex: 1; 
+            transition: all 0.3s ease; 
+            color: #ccc;
+        }
+        
+        /* Buttons Colors */
+        .active-entry { background: #22c55e; color: white; box-shadow: 0 0 15px rgba(34, 197, 94, 0.4); }
+        .active-exit { background: #ef4444; color: white; box-shadow: 0 0 15px rgba(239, 68, 68, 0.4); }
+        .inactive { background: transparent; color: #64748b; }
+
+        /* Profile photo container */
+        .image-box { position: relative; display: inline-block; margin-bottom: 15px; }
+        .profile-pic { 
+            width: 110px; 
+            height: 110px; 
+            border-radius: 50%; 
+            border: 3px solid #fbbf24; /* Gold Border */
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.2); 
+            object-fit: cover; 
+            transition: transform 0.3s; 
+            background: #1e293b;
+        }
+        
+        /* Camera preview area styling */
+        #reader { width: 100%; display: none; margin-bottom: 15px; border: 2px solid #fbbf24; border-radius: 12px; background: black; overflow: hidden; }
+        
+        .camera-btn { 
+            width: 100%; 
+            padding: 12px; 
+            background: rgba(255, 255, 255, 0.1); 
+            color: #e2e8f0; 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px; 
+            font-size: 14px; 
+            cursor: pointer; 
+            margin-bottom: 15px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+        }
+        .camera-btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+        /* Input field styling */
+        input { 
+            width: 90%; 
+            padding: 14px; 
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            border-radius: 12px; 
+            outline: none; 
+            transition: 0.3s; 
+            text-align: center; 
+            font-size: 16px; 
+            color: white;
+            box-sizing: border-box;
+        }
+        input:focus { border-color: #fbbf24; box-shadow: 0 0 10px rgba(251, 191, 36, 0.2); }
+
+        /* Scan Button (Gold Gradient) */
+        .scan-btn { 
+            margin-top: 15px; 
+            width: 100%; 
+            padding: 14px; 
+            background: linear-gradient(90deg, #d97706 0%, #fbbf24 100%); 
+            color: #0f172a; 
+            border: none; 
+            border-radius: 12px; 
+            font-size: 16px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+        }
+        .scan-btn:hover { transform: scale(1.02); }
+
+        /* Message box */
+        .result { margin-top: 20px; padding: 15px; border-radius: 12px; display: none; font-weight: bold; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .success { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #22c55e; }
+        .error { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #ef4444; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>
+        <img src="college-logo.png" alt="IITM Logo" style="height: 35px; vertical-align: middle; margin-right: 8px;">CampusWatch</h2>
+        <p>Campus Entry/Exit System</p>
+
+        <div class="toggle-container">
+            <button id="btnEntry" class="toggle-btn active-entry" onclick="setMode('ENTRY')">ENTRY</button>
+            <button id="btnExit" class="toggle-btn inactive" onclick="setMode('EXIT')">EXIT</button>
+        </div>
+
+        <div class="image-box">
+            <img id="studentPhoto" 
+            src="/logo2.png" class="profile-pic" 
+            style="background: transparent; padding: 0;">
+        </div>
+
+        <div id="reader"></div> 
+        <button class="camera-btn" onclick="toggleCamera()">📷 Scan Barcode</button>
+
+        <input type="text" id="barcodeInput" placeholder="Enter ID Manually..." autofocus>
+        <button class="scan-btn" onclick="processScan()">Verify Access</button>
+
+        <div id="messageBox" class="result"></div>
+    </div>
+
+    <script>
+        /* Variable to store current entry or exit mode */
+        let currentMode = "ENTRY"; 
+        
+        /* Object reference for QR code scanner */
+        let html5QrcodeScanner = null;
+
+        /* Function to switch between entry and exit mode */
+        function setMode(mode) {
+            currentMode = mode;
+            const btnEntry = document.getElementById('btnEntry');
+            const btnExit = document.getElementById('btnExit');
+
+            if (mode === 'ENTRY') {
+                btnEntry.className = "toggle-btn active-entry";
+                btnExit.className = "toggle-btn inactive";
+            } else {
+                btnEntry.className = "toggle-btn inactive";
+                btnExit.className = "toggle-btn active-exit";
+            }
+        }
+
+        /* Function to start or stop the camera scanner */
+        function toggleCamera() {
+            const readerDiv = document.getElementById('reader');
+
+            /* If scanner is already running, stop it */
+            if (html5QrcodeScanner) {
+                html5QrcodeScanner.clear();
+                html5QrcodeScanner = null;
+                readerDiv.style.display = "none";
+                return;
+            }
+
+            /* Start camera scanner */
+            readerDiv.style.display = "block";
+            html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 200 });
+
+            html5QrcodeScanner.render((decodedText) => {
+                
+                /* Put scanned value into input box */
+                document.getElementById('barcodeInput').value = decodedText;
+                
+                /* Stop scanner after successful scan */
+                html5QrcodeScanner.clear();
+                html5QrcodeScanner = null;
+                readerDiv.style.display = "none";
+
+                /* Automatically verify scanned data */
+                processScan();
+            });
+        }
+
+        /* Function to verify ID and show result */
+        async function processScan() {
+            const input = document.getElementById('barcodeInput');
+            const id = input.value;
+            const msgBox = document.getElementById('messageBox');
+            const photo = document.getElementById('studentPhoto');
+
+            if (!id) return;
+
+            msgBox.style.display = 'none';
+            
+            try {
+                const response = await fetch('/scan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: id, mode: currentMode })
+                });
+
+                const data = await response.json();
+
+                msgBox.style.display = 'block';
+                
+                if (data.status === "success") {
+                    msgBox.className = "result success";
+                    msgBox.innerHTML = `✅ ${data.type} SUCCESS<br><small style="color:white; opacity:0.9">${data.student.name}</small>`;
+                    photo.style.padding = "0px";
+                    photo.style.background = "transparent";
+
+                    /* Load student photo using enrollment number */
+                    photo.src = `/${data.student.enrollmentNo}.jpeg`;
+
+                    /* If image not found, show default icon */
+                    photo.onerror = function() {
+                        this.style.padding = "10px";
+                        this.style.background = "#1e293b"; // Darker background for placeholder
+                        this.src = "/logo2.png";
+                    };
+                } else {
+                    msgBox.className = "result error";
+                    msgBox.innerText = data.message;
+                    photo.src = "/logo2.png";
+                    photo.style.padding = "0px";
+                    photo.style.background = "transparent";
+                }
+
+            } catch (error) {
+                msgBox.style.display = 'block';
+                msgBox.className = "result error";
+                msgBox.innerText = " Server Error!";
+            }
+
+            /* Clear input field after processing */
+            input.value = ""; 
+        }
+
+        /* Allow Enter key to submit the ID */
+        document.getElementById('barcodeInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') processScan();
+        });
+    </script>
+</body>
+</html>
