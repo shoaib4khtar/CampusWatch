@@ -32,6 +32,8 @@ CampusWatch proposes a **software-first campus security architecture** that elim
 -  One-click Excel/CSV report export
 -  Dark Mode & Light Mode UI
 -  Barcode scan + Manual ID input support
+![Screenshot_20260221_172215](https://github.com/user-attachments/assets/8ab379f4-9867-4f0f-92db-9a4305f65905)
+<img width="1917" height="1079" alt="Screenshot 2026-02-21 173142" src="https://github.com/user-attachments/assets/2729d451-8be9-454b-ab6c-28b7896ccd24" />
 
 ---
 
@@ -100,6 +102,11 @@ Open your browser and go to `http://localhost:3000`
 
 - 🥇 **1st Prize** — TechnoSapiens 2K26 Techno Exhibit
 - 🇮🇳 **Selected Exhibitor** — Bharat Bodhan AI Conclave 2026, organized by Ministry of Education, Government of India — presented at **Bharat Mandapam, New Delhi**
+
+### 📸 Highlights
+
+![IMG_20260206_121346](https://github.com/user-attachments/assets/800304ef-e535-4fd6-afba-72fa0b45f386)
+![IMG_20260204_154410](https://github.com/user-attachments/assets/ad8c2571-bd95-43e2-98cc-22a2c8211283)
 
 ---
 
